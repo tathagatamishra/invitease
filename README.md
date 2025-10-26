@@ -1,2 +1,2 @@
-# Easy-Invite-Next
+# Easy-Invite
 Make Your Moments Memorable
