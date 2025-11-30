@@ -1,0 +1,38 @@
+/* Exam/UI/Buttons/SimpleInput.css */
+.inputDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.inputLabel {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    padding: 0 6px;
+    color: #444;
+    z-index: 2;
+    transition: 200ms ease;
+}
+
+.FocusLabel {
+    top: -10px;
+    transform: none;
+    font-size: 12px;
+}
+
+.simpleInput {
+    outline: none;
+    width: 100%;
+    background: white;
+    padding-left: 16px;
+    padding-right: 16px;
+    transition: 0.2s ease;
+}
+
+.disabledInput {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

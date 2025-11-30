@@ -1,0 +1,9 @@
+button {
+    transition: 200ms ease;
+}
+
+@media (width >= 40rem /* 640px */) {
+    button:hover {
+        box-shadow: 0 10px 12px #00000010;
+    }
+}

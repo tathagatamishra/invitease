@@ -1,0 +1,23 @@
+.form {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scrollbar-width: none;
+    background: #fff;
+    box-shadow: rgba(55, 65, 81, 0.1) 0px 6px 16px;
+}
+
+.or {
+    position: relative;
+    background: #fff;
+}
+
+.or::before {
+    content: "*";
+    position: absolute;
+    min-width: 100px;
+    border-top: 1px solid #00000010;
+    background: red;
+    height: 20px;
+}

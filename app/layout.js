@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${alanSans.variable} antialiased`}>{children}</body>
+      <body className={`${alanSans.variable} antialiased sm:py-16 sm:px-16 py-6 pb-12 px-6`}>{children}</body>
     </html>
   );
 }
