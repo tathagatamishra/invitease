@@ -27,19 +27,6 @@
             }
         },
         {
-            "cardId": "USER1_CARD_003",
-            "imageUrl": "https://cdn.pixabay.com/photo/2022/10/05/00/36/diwali-7499371_1280.png",
-            "cardTitle": "Diwali Lights Invite",
-            "description": "Personal Diwali party invitation card with lamps and lights.",
-            "owner": "6510a1b2c3d4e5f678901234",
-            "metadata": {
-                "type": "personal",
-                "visibility": "owner",
-                "category": "diwali",
-                "createdBy": "user"
-            }
-        },
-        {
             "cardId": "USER1_CARD_004",
             "imageUrl": "https://cdn.pixabay.com/photo/2021/10/27/02/12/diwali-banner-6745459_1280.png",
             "cardTitle": "Diwali Banner Invite",
@@ -114,6 +101,19 @@
                 "type": "personal",
                 "visibility": "owner",
                 "category": "minimal",
+                "createdBy": "user"
+            }
+        },
+        {
+            "cardId": "USER1_CARD_003",
+            "imageUrl": "https://cdn.pixabay.com/photo/2022/10/05/00/36/diwali-7499371_1280.png",
+            "cardTitle": "Diwali Lights Invite",
+            "description": "Personal Diwali party invitation card with lamps and lights.",
+            "owner": "6510a1b2c3d4e5f678901234",
+            "metadata": {
+                "type": "personal",
+                "visibility": "owner",
+                "category": "diwali",
                 "createdBy": "user"
             }
         }

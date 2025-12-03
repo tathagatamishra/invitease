@@ -13,7 +13,7 @@ export default function SimpleBtn({
   padding = "px-5",
   border = "",
   backgroundImage = "none",
-  className = "rounded-full flex items-center justify-center gap-2 transition-colors overflow-hidden cursor-pointer",
+  className = "relative rounded-full flex items-center justify-center gap-2 transition-colors cursor-pointer",
   tailwind = "",
   theme = "",
   darkTheme = "bg-[#171717] text-[#ffffff] active:bg-[#383838]",
@@ -26,6 +26,8 @@ export default function SimpleBtn({
   onClick = false,
   navigateTo = false,
   disabled = false,
+  notify = false,
+  textStyle= "",
 }) {
   const router = useRouter();
 
@@ -53,13 +55,17 @@ export default function SimpleBtn({
       className={`${cssClass} ${className} ${tailwind} ${padding} ${height} ${width} ${size} ${fontstyle} 
         ${disabled && "Disabled"} 
         ${theme == "dark" && darkTheme} 
+        ${theme == "dark" && "BBB"} 
         ${theme == "light" && lightTheme}`}
     >
+      {notify && (
+        <div className="bg-[#ff2525] min-w-[10px] w-[10px] min-h-[10px] h-[10px] rounded-full absolute top-[2px] right-[2px]"></div>
+      )}
       {icon && icon}
       {logo && (
         <Image className="" src={logo} alt="logo" width={16} height={16} />
       )}
-      {text}
+      <div className={`${textStyle}`}>{text}</div>
     </button>
   );
 }

@@ -58,7 +58,7 @@ export default function Login() {
           </p>
         </div>
 
-        <div className="form w-full max-w-[538px] p-4 z-[1] flex flex-col items-center gap-[24px] rounded-3xl">
+        <div className="form w-full max-w-[538px] p-4 z-[1] flex flex-col items-center gap-[24px] rounded-3xl border border-solid border-black/[.08]">
           <h3 className="mb-4">Log in your account</h3>
 
           <SimpleBtn

@@ -8,3 +8,7 @@ button {
         box-shadow: 0 10px 12px #00000010;
     }
 }
+
+.BBB:hover {
+    box-shadow: 0 10px 12px #00000029;
+}

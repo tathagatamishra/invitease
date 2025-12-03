@@ -56,6 +56,7 @@ p {
 /* width */
 ::-webkit-scrollbar {
   width: 14px;
+  position: absolute;
 }
 
 /* Track */
@@ -67,12 +68,12 @@ p {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #808080; 
+  background: #808080;
   border: 4px solid #fff;
   border-radius: 50px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #000; 
+  background: #000;
 }

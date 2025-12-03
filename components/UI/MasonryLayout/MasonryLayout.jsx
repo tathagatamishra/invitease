@@ -9,16 +9,6 @@ import React, {
 } from "react";
 import "./MasonryLayout.css";
 
-/**
- * Props:
- * - items: Array<any>
- * - calculateColumns: () => number     // called to determine column count (responsive)
- * - renderItem: (item, index) => JSX   // required: returns JSX for each item (must include key)
- * - gap: number (px)                   // optional, default 10
- * - getItemHeight: (item, columnWidth) => number (px) // optional, used for shortest-column placement
- * - defaultItemHeight: number (px)     // fallback height if getItemHeight not provided (default 180)
- * - containerClassName / columnClassName / itemClassName: optional class names
- */
 export default function MasonryLayout({
   items = [],
   calculateColumns,
@@ -32,60 +22,61 @@ export default function MasonryLayout({
   tailwindStyle = "",
 }) {
   const containerRef = useRef(null);
-  const [columns, setColumns] = useState(() => {
-    try {
-      return typeof calculateColumns === "function" ? calculateColumns() : 4;
-    } catch {
-      return 4;
-    }
-  });
+
+  // Make the initial columns deterministic so server and client markup match.
+  // Using 1 avoids depending on `window` on first render.
+  const [columns, setColumns] = useState(1);
   const [containerWidth, setContainerWidth] = useState(0);
 
   const handleResize = useCallback(() => {
     if (!containerRef.current) return;
     const w = containerRef.current.offsetWidth;
     setContainerWidth(w);
+
     try {
       const cols =
         typeof calculateColumns === "function" ? calculateColumns() : columns;
-      setColumns(cols);
+      // ensure at least 1
+      setColumns(Math.max(1, Math.floor(cols)));
     } catch {
       // ignore
     }
-  }, [calculateColumns]);
+  }, [calculateColumns, columns]);
 
   useEffect(() => {
-    // initial measurements on mount
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [handleResize]);
 
-  // Calculate column width
   const columnWidth = useMemo(() => {
     if (!containerWidth || columns <= 0) return 0;
     return (containerWidth - gap * (columns - 1)) / columns;
   }, [containerWidth, columns, gap]);
 
-  // Organize items into columns using shortest column algorithm when possible,
-  // otherwise fallback to simple round-robin.
   const columnsArray = useMemo(() => {
     const cols = Math.max(columns || 1, 1);
     const columnArrays = Array.from({ length: cols }, () => []);
-    // if we can compute heights, use shortest-column placement
+
     const canComputeHeights =
       typeof getItemHeight === "function" && columnWidth > 0;
 
     if (canComputeHeights) {
       const heights = new Array(cols).fill(0);
       items.forEach((item, idx) => {
-        const height = getItemHeight(item, columnWidth) || defaultItemHeight;
+        // guard getItemHeight so it doesn't throw and keep deterministic fallback
+        let height = defaultItemHeight;
+        try {
+          const h = getItemHeight(item, columnWidth);
+          if (typeof h === "number" && isFinite(h) && h > 0) height = h;
+        } catch (e) {
+          height = defaultItemHeight;
+        }
         const shortestIndex = heights.indexOf(Math.min(...heights));
         columnArrays[shortestIndex].push({ item, idx, computedHeight: height });
         heights[shortestIndex] += height + gap;
       });
     } else {
-      // simple round robin (keeps markup stable and predictable)
       items.forEach((item, idx) => {
         const columnIndex = idx % cols;
         columnArrays[columnIndex].push({ item, idx });
@@ -99,22 +90,28 @@ export default function MasonryLayout({
     <div
       ref={containerRef}
       className={`masonry ${containerClassName}`}
-      style={{ gap: `${gap}px` }}
-      data-columns={columns}
+      // use numeric style for gap (keeps render stable)
+      style={{ gap }}
     >
       {columnsArray.map((colItems, colIndex) => (
         <div key={colIndex} className={`masonry-column ${columnClassName}`}>
-          {colItems.map(({ item, idx, computedHeight }) => (
-            <div
-              key={item?.cardId ?? item?.id ?? idx}
-              className={`masonry-item ${itemClassName} ${tailwindStyle}`}
-              style={
-                computedHeight ? { height: `${computedHeight}px` } : undefined
-              }
-            >
-              {renderItem(item, idx)}
-            </div>
-          ))}
+          {colItems.map(({ item, idx, computedHeight }) => {
+            // Prefer stable item key
+            const stableKey =
+              item && (item.id ?? item.key ?? `${colIndex}-${idx}`);
+            const style = computedHeight
+              ? { height: `${Math.round(computedHeight)}px` }
+              : undefined;
+            return (
+              <div
+                key={stableKey}
+                className={`masonry-item ${itemClassName} ${tailwindStyle}`}
+                style={style}
+              >
+                {renderItem(item, idx)}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
