@@ -27,7 +27,7 @@ body {
   align-items: center;
   background: #fff;
   color: #000;
-  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 @media (width <=480px) {
